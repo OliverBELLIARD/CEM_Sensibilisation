@@ -105,31 +105,32 @@ colorbar;  % Ajouter une barre de couleur
 % PosX_right = 34;
 % PosX_left = 8;
 
-ContourY = (7+Ny/2)-Pot1H/2:(7+Ny/2)+Pot1H/2-1;
-PosX_right = (Nx/2)+Pot1L/2;
-PosX_left = (Nx/2)-Pot1L/2;
+% On prend les cellules à l'extérieur de nos sources, d'où les +1
+ContourY = 1+(7+Ny/2)-Pot1H/2:1+(7+Ny/2)+Pot1H/2-1;
+PosX_right = 1+(Nx/2)+Pot1L/2;
+PosX_left = 1+(Nx/2)-Pot1L/2;
 
-% Calcul de l'intégrale de Gauss pour estimer Q1 
+% Calcul de l'intégrale de Gauss pour estimer Q1
 Q1 = 0;
 
 % Parcours du contour gauche
 for x = ContourY
-    Q1 = Q1 + eps0 * Ey(PosX_left, x) * dx; 
-end 
+    Q1 = Q1 + eps0 * Ey(PosX_left, x) * dx;
+end
 
 % Parcours du contour droit
-for x = ContourY 
-    Q1 = Q1 - eps0 * Ey(PosX_right, x) * dx; 
-end 
+for x = ContourY
+    Q1 = Q1 - eps0 * Ey(PosX_right, x) * dx;
+end
 
-% Parcours des côtés verticaux du contour 
+% Parcours des côtés verticaux du contour
 for y = PosX_left+1:PosX_right-1
-    Q1 = Q1 + eps0 * Ex(y, ContourY(1)) * dy; % Côté gauche 
-    Q1 = Q1 - eps0 * Ex(y, ContourY(end)) * dy; % Côté droit 
+    Q1 = Q1 + eps0 * Ex(y, ContourY(1)) * dy; % Côté gauche
+    Q1 = Q1 - eps0 * Ex(y, ContourY(end)) * dy; % Côté droit
 end
 
 % Calcul de la capacité entre les deux conducteurs
 C21 = Q1 / (v1 - v2);
 
-% Affichage du résultat 
+% Affichage du résultat
 disp(['La capacité Cij entre les deux conducteurs est : ', num2str(C21), ' F']);
