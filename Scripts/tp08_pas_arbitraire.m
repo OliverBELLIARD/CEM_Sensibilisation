@@ -49,7 +49,7 @@ V(round((Y_offset2 + Ny / 2) - PotH2 / 2):round((Y_offset2 + Ny / 2) + PotH2 / 2
 
 %% Calcul de convergence
 Iter = 0;   % Nombre d'itérations
-seuil = 0.2; % Seuil de différence
+seuil = 1; % Seuil de différence
 cond = 10;   % Condition de convergence
 ii=1+1:Nx-1;
 jj=1+1:Ny-1;
@@ -57,7 +57,7 @@ jj=1+1:Ny-1;
 % Mesure du temps de calcul
 tic;  % Début du chronométrage
 
-while cond > 6
+while cond > seuil
     % Mémoire de la matrice précédente
     Vold = V;
 
@@ -108,8 +108,8 @@ contour(V, 20);
 %hold on
 %quiver(Ex, Ey)
 
-title("Champ V après " + Iter + " itérations", ...
-    "Seuil : " + cond + ", Temps écoulé : " + temps + "s")
+title("Champ V après "+Iter+" itérations", ...
+    "Seuil : "+seuil+", Temps ecoulé : "+temps+"s")
 colormap(jet)  % Palette allant du bleu au rouge
 colorbar;  % Ajouter une barre de couleur
 
