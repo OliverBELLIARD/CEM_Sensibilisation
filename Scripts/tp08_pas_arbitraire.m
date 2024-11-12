@@ -8,8 +8,8 @@ clc
 eps0 = 8.854e-12;  % Permittivité du vide en F/m
 
 %% Dimensions / maillage
-dx = 0.1;  % Pas en x (en cm)
-dy = 0.1;  % Pas en y (en cm)
+dx = 0.01;  % Pas en x (en cm)
+dy = 0.01;  % Pas en y (en cm)
 
 % Calcul du nombre de points en fonction de la taille du domaine et du pas
 Lx = 40; % Largeur du domaine en cm
@@ -50,14 +50,14 @@ V(round((Y_offset2 + Ny / 2) - PotH2 / 2):round((Y_offset2 + Ny / 2) + PotH2 / 2
 %% Calcul de convergence
 Iter = 0;   % Nombre d'itérations
 seuil = 0.2; % Seuil de différence
-cond = 1;   % Condition de convergence
+cond = 10;   % Condition de convergence
 ii=1+1:Nx-1;
 jj=1+1:Ny-1;
 
 % Mesure du temps de calcul
 tic;  % Début du chronométrage
 
-while cond > seuil
+while cond > 6
     % Mémoire de la matrice précédente
     Vold = V;
 
@@ -91,19 +91,25 @@ temps = toc;  % Fin du chronométrage
 
 %% Figure
 figure(1)
+% Figure du potentiel électrique
 subplot(1, 2, 1);
 h = pcolor(V);
 set(h, 'EdgeColor', 'none'); % Hide grid
+
 title("Potentiel V")
 colormap(jet)  % Palette allant du bleu au rouge
 colorbar;  % Ajouter une barre de couleur
 
+% Visualisation des lignes de champ
 subplot(1, 2, 2);
 contour(V, 20);
-hold on
-quiver(Ex, Ey)
+% Nous pourrions afficher les vecteurs de champ mais elles nuisent à la
+% visualisation du champ à cause de leur grand nombre.
+%hold on
+%quiver(Ex, Ey)
+
 title("Champ V après " + Iter + " itérations", ...
-    "Seuil : " + seuil + ", Temps écoulé : " + temps + "s")
+    "Seuil : " + cond + ", Temps écoulé : " + temps + "s")
 colormap(jet)  % Palette allant du bleu au rouge
 colorbar;  % Ajouter une barre de couleur
 
