@@ -25,14 +25,16 @@ V = zeros(Nx,Ny); % mettre toute la matrice a zero
 % Dimensions du potentiel 1
 Pot1L=28;
 Pot1H=4;
+Y_offset1 = 7;
 
 % Dimensions du potentiel 2
 Pot2L=2;
 Pot2H=18;
+Y_offset2 = -6;
 
-V((7+Ny/2)-Pot1H/2:(7+Ny/2)+Pot1H/2-1, ...
+V((Y_offset1+Ny/2)-Pot1H/2:(Y_offset1+Ny/2)+Pot1H/2-1, ...
     (Nx/2)-Pot1L/2:(Nx/2)+Pot1L/2) = v1; % Conducteur 1 centré
-V((-6+Ny/2)-Pot2H/2:(-6+Ny/2)+Pot2H/2-1, ...
+V((Y_offset2+Ny/2)-Pot2H/2:(Y_offset2+Ny/2)+Pot2H/2-1, ...
     (Nx/2)-Pot2L/2:(Nx/2)+Pot2L/2) = v2; % Conducteur 2 centré
 
 %% Calcul de convergence
@@ -62,7 +64,7 @@ while cond>seuil
         (Nx/2)-Pot2L/2:(Nx/2)+Pot2L/2) = v2; % Conducteur 2 centré
 
     % Equation de calcul
-    V(ii,jj)=0.25*( V(ii+1,jj) + V(ii-1,jj) + V(ii,jj+1) + V(ii,jj-1) );
+    V(ii, jj) = 0.25 * (V(ii+1, jj) + V(ii-1, jj) + V(ii, jj+1) + V(ii, jj-1));
 
     % Calcul de condition de convergence
     cond=norm(abs(Vold(:)-V(:)));
@@ -106,27 +108,27 @@ colorbar;  % Ajouter une barre de couleur
 % PosX_left = 8;
 
 % On prend les cellules à l'extérieur de nos sources, d'où les +1
-ContourY = 1+(7+Ny/2)-Pot1H/2:1+(7+Ny/2)+Pot1H/2-1;
+ContourY = (Y_offset1+Ny/2)-Pot1H/2-1:(Y_offset1+Ny/2)+Pot1H/2+1;
 PosX_right = 1+(Nx/2)+Pot1L/2;
-PosX_left = 1+(Nx/2)-Pot1L/2;
+PosX_left = -1+(Nx/2)-Pot1L/2;
 
 % Calcul de l'intégrale de Gauss pour estimer Q1
 Q1 = 0;
 
 % Parcours du contour gauche
 for x = ContourY
-    Q1 = Q1 + eps0 * Ey(PosX_left, x) * dx;
+    Q1 = Q1 - eps0 * Ey(PosX_left, x) * dx;
 end
 
 % Parcours du contour droit
 for x = ContourY
-    Q1 = Q1 - eps0 * Ey(PosX_right, x) * dx;
+    Q1 = Q1 + eps0 * Ey(PosX_right, x) * dx;
 end
 
 % Parcours des côtés verticaux du contour
 for y = PosX_left+1:PosX_right-1
-    Q1 = Q1 + eps0 * Ex(y, ContourY(1)) * dy; % Côté gauche
-    Q1 = Q1 - eps0 * Ex(y, ContourY(end)) * dy; % Côté droit
+    Q1 = Q1 - eps0 * Ex(y, ContourY(1)) * dy; % Côté gauche
+    Q1 = Q1 + eps0 * Ex(y, ContourY(end)) * dy; % Côté droit
 end
 
 % Calcul de la capacité entre les deux conducteurs
