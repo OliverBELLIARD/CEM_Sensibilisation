@@ -81,23 +81,6 @@ Ex=-Ex; Ey=-Ey;
 % Temps écoulé
 temps = toc;  % Fin du chronométrage
 
-%% Figure
-figure(1)
-subplot(1, 2, 1);
-pcolor(V)
-title("Potentiel V")
-
-% Changer la palette de couleurs
-colormap(jet)  % Palette allant du bleu au rouge
-colorbar;  % Ajouter une barre de couleur
-
-subplot(1, 2, 2);
-contour(V, 20)
-hold on
-quiver(Ex, Ey)
-title("Champ V après "+Iter+" itérations", ...
-    "Seuil : "+seuil+", Temps ecoulé : "+temps+"s")
-
 % Changer la palette de couleurs
 colormap(jet)  % Palette allant du bleu au rouge
 colorbar;  % Ajouter une barre de couleur

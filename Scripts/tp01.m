@@ -40,7 +40,6 @@ colormap(jet)  % Palette allant du bleu au rouge
 colorbar;  % Ajouter une barre de couleur
 
 %% Equation de calcul sans boucle for
-%i=1;j=1;
 ii=2:Nx-1;
 jj=2:Ny-1;
 V(ii,jj)=0.25*( V(ii+1,jj) + V(ii-1,jj) + V(ii,jj+1) + V(ii,jj-1) );

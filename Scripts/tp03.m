@@ -32,7 +32,7 @@ colorbar;  % Ajouter une barre de couleur
 
 %% Calcul de convergence
 Iter=0;     % Nombre d'itérations
-seuil=1e-6; % Seuil de différence
+seuil=1e-6; % Seuil de convergence
 cond=1;     % Condition de convergence
 ii=2:Nx-1;
 jj=2:Ny-1;
